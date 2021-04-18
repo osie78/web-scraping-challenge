@@ -34,7 +34,7 @@ def head_par():
     return text_list
 
 
-def photos():
+def photo():
     # JPL Mars Space Images - Featured Image
     driver = webdriver.Chrome(ChromeDriverManager().install()
     #repeating the same process with a new url
@@ -53,7 +53,7 @@ def photos():
     # this is the final url for the featured image in the website.
     final_img_url=url2_dummy+feat_image
     
-    return(final_img_url) 
+    return final_img_url
 
 
 
@@ -96,7 +96,7 @@ def hemispheres():
         soup=bs(enh_pics)
         full_image=soup.find('div', class_="content").a['href']
         enh_pic_url.append(full_image)
-    enh_pic_url
+    
 
 
     #building the requested dictionary
@@ -111,10 +111,24 @@ def hemispheres():
         
         final_url_name.append(dict)
         
-return(final_url_name)
+    return final_url_name
+
+
+def all():
+    all_dictionary={
+        'headers_paragraphs':head_par(),
+        'feature_image':photo(),
+        'hemispheres_pictures_url':hemispheres()
+    }
+    return all_dictionary    
+
+def all_to_html():
+    conv_to_df=all()
+    df=pd.DataFrame(conv_to_df)
 
 
 
+    
 
 
 
