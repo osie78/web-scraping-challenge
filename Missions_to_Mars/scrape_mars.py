@@ -56,111 +56,64 @@ def photos():
     return(final_img_url) 
 
 
-# Mars Hemispheres
 
-# In[13]:
+def hemispheres():
+    # Mars Hemispheres
+    driver = webdriver.Chrome(ChromeDriverManager().install()
 
+    #browsing the titles. The titles are all <h3>.
+    url3='https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    driver.get(url3)
 
-#browsing the titles. The titles are all <h3>.
-url3='https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-driver.get(url3)
+    hemisphere_titles=driver.page_source
+    soup = bs(hemisphere_titles)
 
+    #extracting the 4 hemisphere titles
+    c=[]
+    hem_names=soup.find_all("h3")
 
-# In[14]:
+    for x in range(0,len(hem_names)):
+        c.append(hem_names[x].text)
 
+    #composing the links that take to the individual hemisphere page
+    main_url='https://astrogeology.usgs.gov'
+    comp_url=[]
 
+    for y in range(0,8,2):
+        acc_link=soup.find_all("a", class_="itemLink product-item")[y].get('href')
+        urls4=main_url+acc_link
+        comp_url.append(urls4)
 
-hemisphere_titles=driver.page_source
-soup = bs(hemisphere_titles)
-
-
-# In[15]:
-
-
-#extracting the 4 hemisphere titles
-c=[]
-hem_names=soup.find_all("h3")
-
-for x in range(0,len(hem_names)):
-    c.append(hem_names[x].text)
-print(c)
-
-
-# In[16]:
-
-
-#composing the links that take to the individual hemisphere page
-main_url='https://astrogeology.usgs.gov'
-comp_url=[]
-
-for y in range(0,8,2):
-    acc_link=soup.find_all("a", class_="itemLink product-item")[y].get('href')
-    urls4=main_url+acc_link
-    comp_url.append(urls4)
-
-# This list contains the links for each hemisphere
-comp_url   
-
-
-# In[17]:
-
-
-# Scrapping the links in each individual hemisphere website where the high resolution picture can be downloaded
-enh_pic_url=[]
-
-for i in comp_url:
-    driver.get(i)
-    enh_pics=driver.page_source
-    soup=bs(enh_pics)
-    full_image=soup.find('div', class_="content").a['href']
-    enh_pic_url.append(full_image)
-enh_pic_url
-
-
-# In[18]:
-
-
-#building the requested dictionary
-
-final_url_name = []
-
-for i in range(4):
+    # comp_url contains the links for each hemisphere
     
-    dict = {}
-    dict["title"] = c[i]
-    dict["img_url"] = enh_pic_url[i]
-    
-    final_url_name.append(dict)
+
+    # Scrapping the links in each individual hemisphere website where the high resolution picture can be downloaded
+    enh_pic_url=[]
+
+    for i in comp_url:
+        driver.get(i)
+        enh_pics=driver.page_source
+        soup=bs(enh_pics)
+        full_image=soup.find('div', class_="content").a['href']
+        enh_pic_url.append(full_image)
+    enh_pic_url
+
+
+    #building the requested dictionary
+
+    final_url_name = []
+
+    for i in range(4):
         
+        dict = {}
+        dict["title"] = c[i]
+        dict["img_url"] = enh_pic_url[i]
+        
+        final_url_name.append(dict)
+        
+return(final_url_name)
 
 
-# In[19]:
-
-
-final_url_name
-
-
-# ## End of Step 1
-
-# In[20]:
-
-
-driver.quit
-
-
-# In[ ]:
-
-
-
-
-
-# In[2]:
-
-
-get_ipython().system('jupyter nbconvert --to script config_template.ipynb')
-
-
-# In[ ]:
 
 
 
