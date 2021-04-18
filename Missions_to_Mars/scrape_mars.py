@@ -126,6 +126,8 @@ def all_to_html():
     conv_to_df=all()
     df=pd.DataFrame(conv_to_df)
 
+    return df.to_html(classes='table table-striped')
+
 
 
     
