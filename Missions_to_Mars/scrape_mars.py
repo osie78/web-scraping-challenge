@@ -122,8 +122,9 @@ def hemispheres():
 
 def scrape():
     scrape_dict={'news':latest_news,
-    'featured_image'=feat_image,
-    'hemispheres'=final_url_name}
+    'featured_image':feat_image,
+    'hemispheres':final_url_name}
+    return scrape_dict
 
 
 
