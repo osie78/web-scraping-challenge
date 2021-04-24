@@ -15,11 +15,11 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_app")
 def home():
 
     # # Find one record of data from the mongo database
-    #data = mongo.db.collection.find_one()
+    scrape_dict = mongo.db.collection.find_one()
 
     # # Return template and data
-    #return render_template("index.html", vacation=data)
-    return "home"
+    
+    return render_template("index.html", scrape_dict=scrape_dict)
 
 
 # Route that will trigger the scrape function
@@ -27,7 +27,7 @@ def home():
 def scrape():
     mars_data = scrape_mars.scrape()
     mongo.db.collection.update({}, mars_data, upsert=True)
-    driver.close()
+  
     return redirect("/", code=302)
 
 
